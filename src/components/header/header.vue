@@ -12,6 +12,11 @@
           <router-link to="/signin">Sign In</router-link>
         </li>
         <li v-if="auth">
+          <router-link to="/funds" class="funds">
+            Funds: {{ userData.funds | currency }}
+          </router-link>
+        </li>
+        <li v-if="auth">
           <button @click="onLogout" class="logout">Logout</button>
         </li>
       </ul>
@@ -24,6 +29,9 @@
     computed: {
       auth () {
         return this.$store.getters.isAuthenticated
+      },
+      userData () {
+        return this.$store.getters.getUserData
       }
     },
     methods: {
@@ -71,6 +79,10 @@
 
   li {
     margin: 0 16px;
+  }
+
+  .funds {
+    color: white;
   }
 
   li a {

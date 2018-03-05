@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <h1>Daily Page</h1>
+    <h1>Calendar Page with Daily, Monthly view</h1>
   </div>
 </template>
 

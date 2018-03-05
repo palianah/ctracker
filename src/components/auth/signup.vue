@@ -5,68 +5,100 @@
         <h2>Register</h2>
         <br>
         <div class="input" :class="{invalid: $v.fullName.$error}">
-          <input
-                  type="text"
-                  id="fullName"
-                  placeHolder="Name"
-                  @blur="$v.fullName.$touch()"
-                  v-model="fullName">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="material-icons">face</i></span>
+            </div>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    placeHolder="Name"
+                    @blur="$v.fullName.$touch()"
+                    v-model="fullName"
+            />
+          </div>
         </div>
-
         <div class="input" :class="{invalid: $v.email.$error}">
-          <input
-                  type="email"
-                  id="email"
-                  placeHolder="E-Mail"
-                  @blur="$v.email.$touch()"
-                  v-model="email">
-          <p v-if="!$v.email.email">Please provide a valid email address.</p>
-        </div>
-        <div class="input" :class="{invalid: $v.age.$error}">
-          <input
-                  type="number"
-                  placeHolder="Age"
-                  id="age"
-                  @blur="$v.age.$touch()"
-                  v-model.number="age">
-          <p v-if="!$v.age.minVal">You have to be at least {{ $v.age.$params.minVal.min }} years old.</p>
-        </div>
-        <div class="input" :class="{invalid: $v.password.$error}">
-          <input
-                  type="password"
-                  id="password"
-                  placeHolder="Password"
-                  @blur="$v.password.$touch()"
-                  v-model="password">
-        </div>
-        <div class="input" :class="{invalid: $v.confirmPassword.$error}">
-          <input
-                  type="password"
-                  placeHolder="Confirm Password"
-                  id="confirm-password"
-                  @blur="$v.confirmPassword.$touch()"
-                  v-model="confirmPassword">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="material-icons">email</i></span>
+            </div>
+            <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    placeHolder="E-Mail"
+                    @blur="$v.email.$touch()"
+                    v-model="email"
+            />
+          </div>
+
+          <div class="alert alert-danger margin-top" v-if="!$v.email.email">
+            Please provide a valid email address.
+          </div>
         </div>
         <div class="input">
-          <select id="country" v-model="country" class="form-control">
-            <option value="select">Country</option>
-            <option value="usa">USA</option>
-            <option value="india">India</option>
-            <option value="uk">UK</option>
-            <option value="germany">Germany</option>
-          </select>
+          <datepicker
+              bootstrap-styling=true
+              calendar-button-icon-content="cake"
+              calendar-button-icon="material-icons"
+              calendar-button=true
+              v-model="birthday"
+              placeholder="Birthday"
+              required=true
+              language="de"></datepicker>
+        </div>
+        <div class="input" :class="{invalid: $v.password.$error}">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="material-icons">lock</i></span>
+            </div>
+            <input
+                    class="form-control"
+                    type="password"
+                    id="password"
+                    placeHolder="Password"
+                    @blur="$v.password.$touch()"
+                    v-model="password"
+            />
+          </div>
+          <div class="alert alert-danger margin-top" v-if="!$v.password.minLen">
+            Your Password must have a minlength of {{ $v.password.$params.minLen.min }}.
+          </div>
+        </div>
+        <div class="input" :class="{invalid: $v.confirmPassword.$error}">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="material-icons">lock</i></span>
+            </div>
+            <input
+                    class="form-control"
+                    type="password"
+                    placeHolder="Confirm Password"
+                    id="confirm-password"
+                    @blur="$v.confirmPassword.$touch()"
+                    v-model="confirmPassword"
+            />
+          </div>
+        </div>
+        <div class="input">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="material-icons">flight_land</i></span>
+            </div>
+            <select id="country" v-model="country" class="form-control">
+              <option value="select">Country</option>
+              <option value="usa">USA</option>
+              <option value="india">India</option>
+              <option value="uk">UK</option>
+              <option value="germany">Germany</option>
+            </select>
+          </div>
         </div>
 
-        <div class="form-check input inline" :class="{invalid: $v.terms.$error}">
-          <input
-                  type="checkbox"
-                  id="terms"
-                  @change="$v.terms.$touch()"
-                  v-model="terms">
-          <label for="terms">Accept Terms of Use</label>
-        </div>
         <div class="submit">
-          <button type="submit" :disabled="$v.$invalid" class="btn btn-primary">Submit</button>
+          <button type="submit" :disabled="$v.$invalid" class="btn btn-primary btn-block">Register</button>
         </div>
       </form>
     </div>
@@ -76,17 +108,17 @@
 <script>
   import { required, email, numeric, minValue, minLength, sameAs, requiredUnless } from 'vuelidate/lib/validators'
   import axios from 'axios'
+  import Datepicker from 'vuejs-datepicker';
 
   export default {
     data () {
       return {
         fullName: "",
         email: '',
-        age: null,
+        birthday: null,
         password: '',
         confirmPassword: '',
-        country: 'select',
-        terms: false
+        country: 'select'
       }
     },
     validations: {
@@ -104,11 +136,6 @@
       fullName: {
         required
       },
-      age: {
-        required,
-        numeric,
-        minVal: minValue(18)
-      },
       password: {
         required,
         minLen: minLength(6)
@@ -117,11 +144,6 @@
 //        sameAs: sameAs('password')
         sameAs: sameAs(vm => {
           return vm.password
-        })
-      },
-      terms: {
-        required: requiredUnless(vm => {
-          return vm.country === 'germany'
         })
       }
     },
@@ -140,20 +162,22 @@
         const formData = {
           fullName: this.fullName,
           email: this.email,
-          age: this.age,
+          birthday: this.birthday,
           password: this.password,
           confirmPassword: this.confirmPassword,
-          country: this.country,
-          terms: this.terms
+          country: this.country
         }
         console.log(formData)
         this.$store.dispatch('signup', formData)
       }
+    },
+    components: {
+      Datepicker
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .signup-form {
     width: 400px;
     margin: 30px auto;
@@ -168,14 +192,8 @@
 
   .input input {
     font: inherit;
-    width: 100%;
-    padding: 6px 12px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-  }
-
-  .input.inline input {
-    width: auto;
   }
 
   .input input:focus {
@@ -187,6 +205,31 @@
     color: red;
   }
 
+  .invalid .input-group-text {
+    border: 1px solid red;
+    background-color: #ffc9aa;
+  }
+
+  .form-control[readonly] {
+    background-color: transparent !important;
+  }
+
+  .vdp-datepicker__calendar-button {
+    display: flex;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+  }
+
   .input.invalid input {
     border: 1px solid red;
     background-color: #ffc9aa;
@@ -195,5 +238,9 @@
   .input select {
     border: 1px solid #ccc;
     font: inherit;
+  }
+
+  .margin-top {
+    margin-top: 15px;
   }
 </style>
