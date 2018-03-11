@@ -29,6 +29,9 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    max-width: 1260px;
+    margin: 0 auto;
+    margin-bottom: 100px;
   }
 
   h1, h2 {
@@ -43,6 +46,10 @@
   li {
     display: inline-block;
     margin: 0 10px;
+  }
+
+  i.material-icons {
+    font-size: 32px;
   }
 
   a {

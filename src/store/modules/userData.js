@@ -5,9 +5,38 @@ import router from '../../router'
 
 const state = {
   funds: 5000,
-  spendCategories: [],
+  spendCategories: [
+    {
+      food: ["mensa", "einkaufen", "trinken"]
+    },
+    {
+      sport: ["bowling", "fitness"]
+    }
+  ],
+  SpendMoney: [
+    {
+      description:"BowlingCenter Schillerpark",
+      costs: "12.00",
+      date: "2108.03.12",
+      time: "12:52",
+      category: "sport/bowling"
+    },
+    {
+      description:"Mensa Nord",
+      costs: "15.55",
+      date: "2108.03.11",
+      time: "09:52",
+      category: "food/mensa"
+    },
+    {
+      description:"Lidl einkaufen",
+      costs: "39.99",
+      date: "2108.03.15",
+      time: "15:52",
+      category: "food/einkaufen"
+    }
+  ],
   earnCategories: [],
-  SpendMoney: [],
   EarnMoney: []
 }
 
